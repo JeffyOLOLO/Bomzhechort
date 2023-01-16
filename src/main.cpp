@@ -10,6 +10,13 @@ PCF8574 pcf[5] = {0x20, 0x21, 0x22, 0x23, 0x24};
 // MIDI Note middle C (C in the fourth octave):
 NoteButton button = {pcf[0].pin(0), {MIDI_Notes::note(MIDI_Notes::C, 4)}};
 
+// Major
+NoteChordButton Cmajor = {
+  pcf[0].pin(0),
+  {MIDI_Notes::note(MIDI_Notes::C, 4)},
+  Chords::Major
+};
+
 void setup()
 {
   Serial.begin(115200);
