@@ -1,9 +1,10 @@
-#ifndef KEYBOARD_H
-#define KEYBOARD_H
+#pragma once
 
 #include <Arduino.h>
 #include <bitset>
 
+namespace BC
+{
 struct Chords
 {
     uint8_t Db;
@@ -33,5 +34,4 @@ public:
     void setup();
     Scales read();
 };
-
-#endif // KEYBOARD_H
+}

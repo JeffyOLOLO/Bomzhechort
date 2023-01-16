@@ -1,7 +1,9 @@
-#include "BluetoothMidi.h"
+#include "BcBluetoothMidi.h"
 
 #include <BLEMidi.h>
 
+namespace BC
+{
 void BluetoothMidi::setup()
 {
   Serial.println("Initializing bluetooth");
@@ -31,4 +33,5 @@ void BluetoothMidi::noteOn(const uint8_t channel, const uint8_t note, const uint
 void BluetoothMidi::noteOff(const uint8_t channel, const uint8_t note, const uint8_t velocity) const
 {
     BLEMidiServer.noteOff(channel, note, velocity);
+}
 }

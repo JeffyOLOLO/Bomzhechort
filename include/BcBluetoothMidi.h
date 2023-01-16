@@ -1,9 +1,10 @@
-#ifndef BLUETOOTHMIDI_H
-#define BLUETOOTHMIDI_H
+#pragma once
 
-#include "Midi.h"
+#include "BcMidi.h"
 
-class BluetoothMidi: public Midi
+namespace BC
+{
+class BluetoothMidi: public BC::Midi
 {
 public:
     BluetoothMidi(const std::string& device_name)
@@ -18,5 +19,4 @@ public:
 private:
     const std::string m_device_name;
 };
-
-#endif // BLUETOOTHMIDI_H
+}

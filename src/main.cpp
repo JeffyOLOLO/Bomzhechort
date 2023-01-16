@@ -1,22 +1,22 @@
+#include <Control_Surface.h>
 #include <Arduino.h>
-#include "BluetoothMidi.h"
 
-BluetoothMidi midi("Bomzhechort");
+#include "AhPcf8574.h"
+
+BluetoothMIDI_Interface midi;
+
+PCF8574 pcf[5] = {0x20, 0x21, 0x22, 0x23, 0x24};
+
+// MIDI Note middle C (C in the fourth octave):
+NoteButton button = {pcf[0].pin(0), {MIDI_Notes::note(MIDI_Notes::C, 4)}};
 
 void setup()
 {
   Serial.begin(115200);
-  midi.setup();
+  Control_Surface.begin();
 }
 
 void loop()
 {
-  // If we've got a connection, we send an A4 during one second, at full velocity (127)
-  if(midi.isConnected())
-  {
-      midi.noteOn(0, 69, 127);
-      delay(1000);
-      midi.noteOff(0, 69, 127);        // Then we make a delay of one second before returning to the beginning of the loop
-      delay(1000);
-  }
+  Control_Surface.loop();
 }
