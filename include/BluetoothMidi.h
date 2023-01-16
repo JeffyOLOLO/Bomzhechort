@@ -1,9 +1,9 @@
 #ifndef BLUETOOTHMIDI_H
 #define BLUETOOTHMIDI_H
 
-#include "Midi.h"
+#include "MidiBase.h"
 
-class BluetoothMidi: public Midi
+class BluetoothMidi: public MidiBase
 {
 public:
     BluetoothMidi(const std::string& device_name)
