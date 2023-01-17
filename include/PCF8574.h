@@ -28,7 +28,7 @@ private:
     uint8_t address;
     pin_t interruptPin;
 
-    static bool isConnectedToI2C;
+    // static bool isConnectedToI2C;
 
     bool pinModesDirty = true;
     BitArray<8> bufferedPinModes;

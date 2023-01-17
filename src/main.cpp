@@ -20,6 +20,7 @@ NoteChordButton Cmajor = {
 void setup()
 {
   Serial.begin(115200);
+  Wire.begin();
   Control_Surface.begin();
 }
 

@@ -4,7 +4,7 @@
 
 BEGIN_AH_NAMESPACE
 
-bool PCF8574::isConnectedToI2C = false;
+// bool PCF8574::isConnectedToI2C = false;
 
 void PCF8574::pinModeBuffered(pin_t pin, PinMode_t mode) {
     if (mode == INPUT) {
@@ -46,11 +46,12 @@ void PCF8574::begin() {
         ExtIO::pinMode(interruptPin, INPUT_PULLUP);
     // I²C setup if necessary
     // TODO: is this flag required?
-    if (!isConnectedToI2C)
-    {
-        Wire.begin();
-        isConnectedToI2C = true;
-    }
+    //       init I²C in main.cpp
+    // if (!isConnectedToI2C)
+    // {
+    //     Wire.begin();
+    //     isConnectedToI2C = true;
+    // }
 }
 
 void PCF8574::updateBufferedOutputs() {
