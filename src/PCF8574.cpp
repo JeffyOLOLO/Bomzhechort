@@ -29,7 +29,7 @@ void PCF8574::digitalWriteBuffered(pin_t pin, PinStatus_t status) {
     bufferedOutputs.set(pin, boolstate);
 }
 
-int PCF8574::digitalReadBuffered(pin_t pin) {
+PinStatus_t PCF8574::digitalReadBuffered(pin_t pin) {
     return bitRead(bufferedInputs, pin) ? HIGH : LOW;
 }
 

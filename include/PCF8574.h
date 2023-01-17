@@ -14,7 +14,7 @@ public:
 
     void pinModeBuffered(pin_t pin, PinMode_t mode) override;
     void digitalWriteBuffered(pin_t pin, PinStatus_t status) override;
-    int digitalReadBuffered(pin_t pin) override;
+    PinStatus_t digitalReadBuffered(pin_t pin) override;
     analog_t analogReadBuffered(pin_t pin) override;
     void analogWriteBuffered(pin_t, analog_t) override;
 
