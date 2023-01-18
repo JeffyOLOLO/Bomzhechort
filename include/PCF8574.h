@@ -31,22 +31,15 @@ protected:
     void writeGPIO(uint8_t data);
 
 private:
-    uint8_t address;
-    pin_t interruptPin;
+    const uint8_t address;
+    const pin_t interruptPin;
 
     // mode of some pin(s) was changed
     bool pinModesDirty = true;
-    constexpr static bool PIN_MODE_INPUT  = 0;
-    constexpr static bool PIN_MODE_OUTPUT = 1;
-    // 0 - input; 1 - output
+    constexpr static bool PIN_MODE_INPUT  = 1;
+    constexpr static bool PIN_MODE_OUTPUT = 0;
+    // 0 - output; 1 - input
     BitArray<8> bufferedPinModes;
-
-    // pullup of some pin(s) was changed
-    bool pullupsDirty = true;
-    constexpr static bool PULLUP_OFF = 0;
-    constexpr static bool PULLUP_ON  = 1;
-    // 0 - off; 1 - on
-    BitArray<8> bufferedPullups;
 
     // state of some pin(s) was changed
     bool outputsDirty = true;
