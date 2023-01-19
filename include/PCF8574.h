@@ -37,8 +37,8 @@ private:
 
     // mode of some pin(s) was changed
     bool pinModesDirty = true;
-    constexpr static bool PIN_MODE_INPUT  = 1;
-    constexpr static bool PIN_MODE_OUTPUT = 0;
+    constexpr static bool PIN_MODE_INPUT  = true;
+    constexpr static bool PIN_MODE_OUTPUT = false;
     // 0 - output; 1 - input
     BitArray<8> bufferedPinModes;
 
@@ -48,7 +48,8 @@ private:
     BitArray<8> bufferedOutputs;
 
     // state of pins is stored to this buffer
-    uint8_t bufferedInputs = 0;
+    // 1 - low; 0 - high
+    uint8_t bufferedInputs = 0xFF;
 };
 
 END_AH_NAMESPACE

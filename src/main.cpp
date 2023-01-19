@@ -1,9 +1,13 @@
 #include <Arduino.h>
+#include <Wire.h>
 
 #include <Control_Surface.h>
+#include "PCF8574.h"
 
-constexpr ArduinoPin_t ORANGE = 12;
-constexpr ArduinoPin_t YELOW  = 13;
+// Didn't work with 12 and 13 pins, so do not use them for I²C
+constexpr ArduinoPin_t I2C_SCL = 14;
+constexpr ArduinoPin_t I2C_SDA = 15;
+
 constexpr ArduinoPin_t GREEN  = 15;
 constexpr ArduinoPin_t BLUE   = 14;
 
@@ -20,15 +24,19 @@ BluetoothMIDI_Interface midi;
 // USBDebugMIDI_Interface mididbg = 115200;
 // BidirectionalMIDI_Pipe mpipe;
 
-NoteChordButton Dbmajor = { ORANGE, {MIDI_Notes::Db(OCTAVE), CHORDS_CHANNEL}, Chords::Major };
-NoteChordButton Abmajor = { YELOW,  {MIDI_Notes::Ab(OCTAVE), CHORDS_CHANNEL}, Chords::Major };
+PCF8574 pcf;
+
+NoteChordButton chords[2] = {
+  { pcf.pin(0), {MIDI_Notes::Db(OCTAVE), CHORDS_CHANNEL}, Chords::Major },
+  { pcf.pin(1), {MIDI_Notes::Ab(OCTAVE), CHORDS_CHANNEL}, Chords::Major }
+};
 
 Bank<2> bank(1);
 ManyButtonsSelector<2> selector = {
   bank,
   {
-    ORANGE,
-    YELOW,
+    pcf.pin(0),
+    pcf.pin(1),
   }
 };
 
@@ -50,7 +58,16 @@ Bankable::ManyAddresses::NoteButton<2> strings[2] = {
 
 void setup()
 {
+  // For some reason, the framework reads PCF8574 buttons as inverted while simple pcf.digitalRead(n) works fine.
+  // So that we have to invert them.
+  for (auto &&c : chords)
+  {
+    c.invert();
+  }
+
   // midi | mpipe | mididbg;
+  Wire.begin(I2C_SDA, I2C_SCL);
+
   // Set up instruments
   midi.sendProgramChange({MIDI_PC::Rock_Organ, CHORDS_CHANNEL});
   midi.sendProgramChange({MIDI_PC::Electric_Guitar_Clean, STRINGS_CHANNEL});
