@@ -20,6 +20,7 @@ public:
     analog_t analogReadBuffered(pin_t pin) override;
     void analogWriteBuffered(pin_t, analog_t) override;
 
+    // Wire.begin() should be called in main
     void begin() override;
 
     void updateBufferedOutputs() override;
