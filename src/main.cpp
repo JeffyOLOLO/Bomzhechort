@@ -3,13 +3,11 @@
 
 #include <Control_Surface.h>
 #include "PCF8574.h"
+#include "MPR121.h"
 
 // Didn't work with 12 and 13 pins, so do not use them for I²C
 constexpr ArduinoPin_t I2C_SCL = 14;
 constexpr ArduinoPin_t I2C_SDA = 15;
-
-constexpr ArduinoPin_t GREEN  = 15;
-constexpr ArduinoPin_t BLUE   = 14;
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -21,50 +19,55 @@ constexpr auto CHORDS_CHANNEL  = CHANNEL_1;
 constexpr auto STRINGS_CHANNEL = CHANNEL_2;
 
 BluetoothMIDI_Interface midi;
-// USBDebugMIDI_Interface mididbg = 115200;
+// USBDebugMIDI_Interface midi = 115200;
 // BidirectionalMIDI_Pipe mpipe;
 
 PCF8574 pcf;
 
-NoteChordButton chords[2] = {
+NoteChordButton chords[3] = {
   { pcf.pin(0), {MIDI_Notes::Db(OCTAVE), CHORDS_CHANNEL}, Chords::Major },
-  { pcf.pin(1), {MIDI_Notes::Ab(OCTAVE), CHORDS_CHANNEL}, Chords::Major }
+  { pcf.pin(1), {MIDI_Notes::Ab(OCTAVE), CHORDS_CHANNEL}, Chords::Major },
+  { 16        , {MIDI_Notes::Bb(OCTAVE), CHORDS_CHANNEL}, Chords::Major },
 };
 
-Bank<2> bank(1);
-ManyButtonsSelector<2> selector = {
+Bank<3> bank(1);
+ManyButtonsSelector<3> selector = {
   bank,
   {
     pcf.pin(0),
     pcf.pin(1),
+    16,
   }
 };
 
-Array<MIDIAddress, 2> stringNotes[2] = {
+Array<MIDIAddress, 3> stringNotes[3] = {
   {{ // string 1
     {MIDI_Notes::Db(OCTAVE), STRINGS_CHANNEL},
     {MIDI_Notes::Ab(OCTAVE), STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE), STRINGS_CHANNEL},
   }},
   {{ // string 2
     {MIDI_Notes::Db(OCTAVE)+1, STRINGS_CHANNEL},
     {MIDI_Notes::Ab(OCTAVE)+1, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)+1, STRINGS_CHANNEL},
+  }},
+  {{ // string 3
+    {MIDI_Notes::Db(OCTAVE)+2, STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE)+2, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)+2, STRINGS_CHANNEL},
   }},
 };
 
-Bankable::ManyAddresses::NoteButton<2> strings[2] = {
-  { bank, GREEN, stringNotes[0] },
-  { bank, BLUE,  stringNotes[1] },
+MPR121 mpr;
+
+Bankable::ManyAddresses::NoteButton<3> strings[3] = {
+  { bank, mpr.pin(0), stringNotes[0] },
+  { bank, mpr.pin(1), stringNotes[1] },
+  { bank, mpr.pin(2), stringNotes[2] },
 };
 
 void setup()
 {
-  // For some reason, the framework reads PCF8574 buttons as inverted while simple pcf.digitalRead(n) works fine.
-  // So that we have to invert them.
-  for (auto &&c : chords)
-  {
-    c.invert();
-  }
-
   // midi | mpipe | mididbg;
   Wire.begin(I2C_SDA, I2C_SCL);
 
