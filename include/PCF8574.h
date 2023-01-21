@@ -25,7 +25,6 @@ public:
 
     void updateBufferedOutputs() override;
     void updateBufferedInputs() override;
-    void updateBufferedPinModes();
 
 protected:
     uint8_t readGPIO();
@@ -48,8 +47,7 @@ private:
     BitArray<8> bufferedOutputs;
 
     // state of pins is stored to this buffer
-    // 1 - low; 0 - high
-    uint8_t bufferedInputs = 0xFF;
+    uint8_t bufferedInputs;
 };
 
 END_AH_NAMESPACE

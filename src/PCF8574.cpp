@@ -6,49 +6,49 @@ BEGIN_AH_NAMESPACE
 
 void PCF8574::pinModeBuffered(pin_t pin, PinMode_t mode)
 {
-    Serial.print("pinModeBuffered:\n");
-    Serial.print("  pin: ");
-    Serial.print(pin);
-    Serial.print("\n");
-    Serial.print("  pinModesDirty = ");
-    Serial.print(pinModesDirty ? "true" : "false");
-    Serial.print("\n");
-    Serial.print("  bufferedPinModes = ");
-    Serial.print(bufferedPinModes.getByte(0));
-    Serial.print("\n");
-    Serial.print("  mode: ");
+    // Serial.print("pinModeBuffered:\n");
+    // Serial.print("  pin: ");
+    // Serial.print(pin);
+    // Serial.print("\n");
+    // Serial.print("  pinModesDirty = ");
+    // Serial.print(pinModesDirty ? "true" : "false");
+    // Serial.print("\n");
+    // Serial.print("  bufferedPinModes = ");
+    // Serial.print(bufferedPinModes.getByte(0));
+    // Serial.print("\n");
+    // Serial.print("  mode: ");
 
     if (mode == INPUT || mode == INPUT_PULLUP || mode == INPUT_PULLDOWN) {
-        Serial.print("  INPUT");
+        // Serial.print("  INPUT");
         pinModesDirty |= bufferedPinModes.get(pin) == PIN_MODE_OUTPUT;
         bufferedPinModes.set(pin);
     } else if (mode == OUTPUT) {
-        Serial.print("  OUTPUT");
+        // Serial.print("  OUTPUT");
         pinModesDirty |= bufferedPinModes.get(pin) == PIN_MODE_INPUT;
         bufferedPinModes.clear(pin);
     } else {
-        Serial.print("  unsupported");
+        // Serial.print("  unsupported");
     }
 
-    Serial.print("\n");
-    Serial.print("  pinModesDirty = ");
-    Serial.print(pinModesDirty ? "true" : "false");
-    Serial.print("\n");
-    Serial.print("  bufferedPinModes = ");
-    Serial.print(bufferedPinModes.getByte(0));
-    Serial.print("\n");
-    Serial.print("pinModeBuffered end.\n");
+    // Serial.print("\n");
+    // Serial.print("  pinModesDirty = ");
+    // Serial.print(pinModesDirty ? "true" : "false");
+    // Serial.print("\n");
+    // Serial.print("  bufferedPinModes = ");
+    // Serial.print(bufferedPinModes.getByte(0));
+    // Serial.print("\n");
+    // Serial.print("pinModeBuffered end.\n");
 }
 
 void PCF8574::begin()
 {
-    Serial.print("begin:\n");
+    // Serial.print("begin:\n");
     if (interruptPin != NO_PIN)
     {
-        Serial.print("  INT pin processing...\n");
+        // Serial.print("  INT pin processing...\n");
         ExtIO::pinMode(interruptPin, INPUT_PULLUP);
     }
-    Serial.print("begin end.\n");
+    // Serial.print("begin end.\n");
 }
 
 void PCF8574::digitalWriteBuffered(pin_t pin, PinStatus_t status)
@@ -71,13 +71,13 @@ void PCF8574::analogWriteBuffered(pin_t pin, analog_t value)
 PinStatus_t PCF8574::digitalReadBuffered(pin_t pin)
 {
     // Serial.print("digitalReadBuffered:\n");
-    return bitRead(bufferedInputs, pin) ? LOW : HIGH;
+    return bitRead(bufferedInputs, pin) ? HIGH : LOW;
 }
 
 analog_t PCF8574::analogReadBuffered(pin_t pin)
 {
     // Serial.print("analogReadBuffered:\n");
-    return bitRead(bufferedInputs, pin) ? 0 : 1023;
+    return bitRead(bufferedInputs, pin) ? 1023 : 0;
 }
 
 // Phisically update output pins state
@@ -92,13 +92,13 @@ void PCF8574::updateBufferedOutputs()
     // "The I/Os should be high before being used as inputs."
     const uint8_t outputData = bufferedOutputs.getByte(0) | bufferedPinModes.getByte(0);
     // Write this byte over I²C
-    Serial.print("  outputData = ");
-    Serial.print(outputData, 2);
-    Serial.print("\n");
+    // Serial.print("  outputData = ");
+    // Serial.print(outputData, 2);
+    // Serial.print("\n");
     writeGPIO(outputData);
     outputsDirty = false;
     pinModesDirty = false;
-    Serial.print("updateBufferedOutputs end.\n");
+    // Serial.print("updateBufferedOutputs end.\n");
 }
 
 // Physical read to the inputs buffer
@@ -113,21 +113,6 @@ void PCF8574::updateBufferedInputs()
     // Serial.print(bufferedInputs);
     // Serial.print("\n");
     // Serial.print("updateBufferedInputs end.\n");
-}
-
-// Is it not required since PCF does not require port configuration signal?
-// Physical change pin modes if they were changed
-void PCF8574::updateBufferedPinModes()
-{
-    // Serial.print("updateBufferedPinModes:\n");
-    if (pinModesDirty) {
-        // Set Outputs + pins that configured as Inputs to HIGH, because
-        // "The I/Os should be high before being used as inputs."
-        const uint8_t outputData = bufferedOutputs.getByte(0) | bufferedPinModes.getByte(0);
-        // Write this byte over I²C
-        writeGPIO(outputData);
-        pinModesDirty = false;
-    }
 }
 
 uint8_t PCF8574::readGPIO()
