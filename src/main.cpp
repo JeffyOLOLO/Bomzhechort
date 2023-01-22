@@ -5,6 +5,9 @@
 #include "PCF8574.h"
 #include "MPR121.h"
 
+// Sometimes MPR INT pin causes infinite restart during image flashing
+// Maybe pin 2 is not the best pin for INT?
+constexpr ArduinoPin_t MPR_INT_PIN = 2;
 // Didn't work with 12 and 13 pins, so do not use them for I²C
 constexpr ArduinoPin_t I2C_SCL = 14;
 constexpr ArduinoPin_t I2C_SDA = 15;
@@ -104,7 +107,8 @@ Array<MIDIAddress, 3> stringNotes[12] = {
   }},
 };
 
-MPR121 mpr;
+// Sometimes INT pin causes infinite restart during image flashing
+MPR121 mpr = {MPR121::BASE_ADDRESS, MPR_INT_PIN};
 
 Bankable::ManyAddresses::NoteButton<3> strings[12] = {
   { bank, mpr.pin(0),  stringNotes[0] },
