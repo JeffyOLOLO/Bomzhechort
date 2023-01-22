@@ -41,30 +41,84 @@ ManyButtonsSelector<3> selector = {
   }
 };
 
-Array<MIDIAddress, 3> stringNotes[3] = {
+Array<MIDIAddress, 3> stringNotes[12] = {
   {{ // string 1
+    {MIDI_Notes::Db(OCTAVE)-5, STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE)-5, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)-5, STRINGS_CHANNEL},
+  }},
+  {{ // string 2
+    {MIDI_Notes::Db(OCTAVE)-4, STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE)-4, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)-4, STRINGS_CHANNEL},
+  }},
+  {{ // string 3
+    {MIDI_Notes::Db(OCTAVE)-3, STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE)-3, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)-3, STRINGS_CHANNEL},
+  }},
+  {{ // string 4
+    {MIDI_Notes::Db(OCTAVE)-2, STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE)-2, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)-2, STRINGS_CHANNEL},
+  }},
+  {{ // string 5
+    {MIDI_Notes::Db(OCTAVE)-1, STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE)-1, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)-1, STRINGS_CHANNEL},
+  }},
+  {{ // string 6
     {MIDI_Notes::Db(OCTAVE), STRINGS_CHANNEL},
     {MIDI_Notes::Ab(OCTAVE), STRINGS_CHANNEL},
     {MIDI_Notes::Bb(OCTAVE), STRINGS_CHANNEL},
   }},
-  {{ // string 2
+  {{ // string 7
+    {MIDI_Notes::Db(OCTAVE), STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE), STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE), STRINGS_CHANNEL},
+  }},
+  {{ // string 8
     {MIDI_Notes::Db(OCTAVE)+1, STRINGS_CHANNEL},
     {MIDI_Notes::Ab(OCTAVE)+1, STRINGS_CHANNEL},
     {MIDI_Notes::Bb(OCTAVE)+1, STRINGS_CHANNEL},
   }},
-  {{ // string 3
+  {{ // string 9
     {MIDI_Notes::Db(OCTAVE)+2, STRINGS_CHANNEL},
     {MIDI_Notes::Ab(OCTAVE)+2, STRINGS_CHANNEL},
     {MIDI_Notes::Bb(OCTAVE)+2, STRINGS_CHANNEL},
+  }},
+  {{ // string 10
+    {MIDI_Notes::Db(OCTAVE)+3, STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE)+3, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)+3, STRINGS_CHANNEL},
+  }},
+  {{ // string 11
+    {MIDI_Notes::Db(OCTAVE)+4, STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE)+4, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)+4, STRINGS_CHANNEL},
+  }},
+  {{ // string 12
+    {MIDI_Notes::Db(OCTAVE)+5, STRINGS_CHANNEL},
+    {MIDI_Notes::Ab(OCTAVE)+5, STRINGS_CHANNEL},
+    {MIDI_Notes::Bb(OCTAVE)+5, STRINGS_CHANNEL},
   }},
 };
 
 MPR121 mpr;
 
-Bankable::ManyAddresses::NoteButton<3> strings[3] = {
-  { bank, mpr.pin(0), stringNotes[0] },
-  { bank, mpr.pin(1), stringNotes[1] },
-  { bank, mpr.pin(2), stringNotes[2] },
+Bankable::ManyAddresses::NoteButton<3> strings[12] = {
+  { bank, mpr.pin(0),  stringNotes[0] },
+  { bank, mpr.pin(1),  stringNotes[1] },
+  { bank, mpr.pin(2),  stringNotes[2] },
+  { bank, mpr.pin(3),  stringNotes[3] },
+  { bank, mpr.pin(4),  stringNotes[4] },
+  { bank, mpr.pin(5),  stringNotes[5] },
+  { bank, mpr.pin(6),  stringNotes[6] },
+  { bank, mpr.pin(7),  stringNotes[7] },
+  { bank, mpr.pin(8),  stringNotes[8] },
+  { bank, mpr.pin(9),  stringNotes[9] },
+  { bank, mpr.pin(10), stringNotes[10] },
+  { bank, mpr.pin(11), stringNotes[11] },
 };
 
 void setup()
