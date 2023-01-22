@@ -47,7 +47,8 @@ private:
     BitArray<8> bufferedOutputs;
 
     // state of pins is stored to this buffer
-    uint8_t bufferedInputs;
+    // if INT pint is used, init state should be FF until the first reading. FF means no buttons on input pins are pressed
+    uint8_t bufferedInputs = 0xFF;
 };
 
 END_AH_NAMESPACE

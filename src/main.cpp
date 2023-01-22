@@ -22,7 +22,8 @@ BluetoothMIDI_Interface midi;
 // USBDebugMIDI_Interface midi = 115200;
 // BidirectionalMIDI_Pipe mpipe;
 
-PCF8574 pcf;
+constexpr auto PCF_INT_PIN = 13;
+PCF8574 pcf = {0x20, PCF_INT_PIN};
 
 NoteChordButton chords[3] = {
   { pcf.pin(0), {MIDI_Notes::Db(OCTAVE), CHORDS_CHANNEL}, Chords::Major },
