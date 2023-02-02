@@ -117,17 +117,20 @@ void PCF8574::updateBufferedInputs()
 
 uint8_t PCF8574::readGPIO()
 {
-    // Serial.print("readGPIO:\n");
+    // Serial.print(address);
+    // Serial.print(" readGPIO:\n");
     Wire.requestFrom(address, size_t(1));
     return Wire.read();
 }
 
 void PCF8574::writeGPIO(uint8_t data)
 {
-    // Serial.print("writeGPIO:\n");
+    // Serial.print(address);
+    // Serial.print(" writeGPIO:\n");
     Wire.beginTransmission(address);
     Wire.write(data);
-    Wire.endTransmission();
+    if (auto err = Wire.endTransmission())
+        log_e("PCF8574::writeGPIO() error %d", err);
 }
 
 
