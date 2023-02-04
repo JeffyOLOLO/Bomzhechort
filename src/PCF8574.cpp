@@ -119,18 +119,17 @@ uint8_t PCF8574::readGPIO()
 {
     // Serial.print(address);
     // Serial.print(" readGPIO:\n");
-    Wire.requestFrom(address, size_t(1));
+    if (!Wire.requestFrom(address, size_t(1)))
+        log_e("  from 0x%02hhX", address);
     return Wire.read();
 }
 
 void PCF8574::writeGPIO(uint8_t data)
 {
-    // Serial.print(address);
-    // Serial.print(" writeGPIO:\n");
     Wire.beginTransmission(address);
     Wire.write(data);
     if (auto err = Wire.endTransmission())
-        log_e("PCF8574::writeGPIO() error %d", err);
+        log_e("to 0x%02hhX, error %d", address, err);
 }
 
 
